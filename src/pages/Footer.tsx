@@ -1,24 +1,30 @@
+import { support } from '../utiles/tabcontents'
+import { hoisting } from '../utiles/tabcontents'
+import { airbnb } from '../utiles/tabcontents'
+
 const Footer = () => {
     return (
         <footer>
-            <div className="column">
+            <div className="column  flex justify-between">
                 <ul>
-                    support
-                    <li>help center</li>
-                    
+                    <b>support</b>
+                    {support.map((supportItem) => <li>{supportItem}</li>)}
                 </ul>
                 <ul>
-                    Hosting
-                    <li>Airbnb your home</li>
+                    <b>Hosting</b>
+                    {hoisting.map((hoistingItem) => <li>{hoistingItem}</li>)}
                 </ul>
                 <ul>
-                    Airbnb
-                    <li>2025 Summer Release</li>
+                    <b>Airbnb</b>
+                    {airbnb.map((airbnbItem) => <li>{airbnbItem}</li>)}
                 </ul>
 
             </div>
             <div className="copyright">
-
+               <h5> © {Date()} Airbnb, Inc.· <span>TermsPrivacyYour</span> <span>Privacy</span> <span>Choices</span></h5> 
+               <div className='href'>
+                    <li></li>
+               </div>
             </div>
         </footer>
     )

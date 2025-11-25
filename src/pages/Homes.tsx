@@ -1,44 +1,17 @@
-import React from "react";
+import Gallery from "../components/Gallery";
+import TabContent from "../components/Tab";
 
-const Homes = () => {
+export default function Home() {
+    
+
     return (
-        <>
-            <div className="views">
-                <div className="gallerytitle">
+        <main className="px-6 py-10 max-w-6xl mx-auto">
 
-                </div>
-                <div className="gallery-item">
-                    <div className="card" >
-                        <button className="showCard">Guest Favorite</button>
-                        <button>favorite *</button>
-                        <img width="200" height="200" src="../assets/images/img01.jpg" alt="img01" />
-
-                    </div>
-                    <div className="card-detail">
-                        <h5>Home in Breckenridge</h5>
-                        <h6>$4445 for nights <span>* 4.95</span></h6>
-
-                    </div>
-
-                </div>
-
-            </div>
-            <div className="inspiration-for-future">
-                <h3>Inspiration for future getaways</h3>
-                <div className="">
-                    <div className="tabs">
-
-                    </div>
-                    <div className="tabcontent">
-
-                    </div>
-                </div>
-
-            </div>
-        </>
-    )
+            {/* ================= GALLERY SECTION ================= */}
+            <Gallery />
+            
+            {/* ================= TAB SECTION ================= */}
+            <TabContent />
+        </main>
+    );
 }
-
-export default Homes;
-
-
