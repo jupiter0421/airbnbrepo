@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Header from './pages/Header';
 import './App.css';
+import Navbar from './components/Navbar';
 import Homes from './pages/Homes';
 import Experiences from './pages/Experiences';
 import Services from './pages/Services';
+// import Header from './pages/Header';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         </h1>
 
         {/* Navigation */}
-        <Header />
+        <Navbar />
+        {/* <Header /> */}
 
         {/* Routes */}
         <Routes>
