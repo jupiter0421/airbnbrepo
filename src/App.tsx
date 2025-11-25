@@ -13,8 +13,8 @@ function App() {
         <h1 className='text-3xl font-bold underline'>
           Hello world! This is AirBNB site.
         </h1>
-        {/* Navigation */}
 
+        {/* Navigation */}
         <Header />
 
         {/* Routes */}
