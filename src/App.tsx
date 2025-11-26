@@ -12,13 +12,9 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <h1 className='text-3xl font-bold underline'>
-          Hello world! This is AirBNB site.
-        </h1>
-
+        
         {/* Navigation */}
         <Navbar />
-        {/* <Header /> */}
 
         {/* Routes */}
         <Routes>
