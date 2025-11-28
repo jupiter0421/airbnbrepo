@@ -6,6 +6,7 @@ import Homes from './pages/Homes';
 import Experiences from './pages/Experiences';
 import Services from './pages/Services';
 import Footer from './pages/Footer';
+import Navbar1 from './components/Navbar1';
 // import Header from './pages/Header';
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
       <div className="App">
         
         {/* Navigation */}
-        <Navbar />
+        <Navbar1 />
+        {/* <Navbar /> */}
 
         {/* Routes */}
         <Routes>

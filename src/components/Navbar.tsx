@@ -1,17 +1,18 @@
+import UserMenu from "./UserMenu";
 import { Link } from "react-router-dom";
-// import airbnbBrand from airbnbBrand
+import { Globe, Search, Menu, UserCircle } from "lucide-react";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
     return (
-        <>
-            {/* Top NAV — Homes / Experiences / Services */}
-            <div className="flex justify-center gap-8 py-3 border-t font-medium text-gray-600">
+        <div className="relative">
+
+            <div className=" flex justify-center gap-8 py-3 border-t font-medium text-gray-600">
                 <Link className="hover:text-black transition flex" to="/"><img className="" width={30} src="../assets/images/home.png" alt="home-img" /> Homes</Link>
                 <Link className="hover:text-black transition flex" to="/experiences"> <img className="" width={30} src="../assets/images/house0.webp" alt="home-img" />  Experiences</Link>
                 <Link className="hover:text-black transition flex" to="/services"> <img className="" width={30} src="../assets/images/home.png" alt="home-img" />  Services</Link>
             </div>
-
-            <header className="sticky top-0 z-50 bg-white shadow-sm">
+            <header className="sticky top-4 z-50 bg-white shadow-sm">
                 <div className="flex items-center justify-between px-6 py-4">
 
                     {/* LEFT — AIRBNB LOGO */}
@@ -27,39 +28,46 @@ const Navbar = () => {
                         </svg>
                     </Link>
 
-                    {/* Middle NAV — SEARCH BAR */}
 
-                    <div className="hidden md:flex items-center border shadow-sm rounded-full px-4 py-2 gap-3 hover:shadow-md transition cursor-pointer">
-                        <span className="font-medium border-1 p-3  rounded-full ">Anywhere</span>
-                        <span className="text-gray-300">|</span>
-                        <span className="font-medium border-1 p-3  rounded-full">Any week</span>
-                        <span className="text-gray-300">|</span>
-                        <span className="text-gray-500 border-1 p-3  rounded-full">Add guests</span>
-
-                        <div className="bg-red-500 text-white rounded-full p-2">
-                            <i className="fa-solid fa-magnifying-glass text-sm"></i>
-                        </div>
-                    </div>
 
                     {/* RIGHT — GLOBE + USER MENU */}
                     <div className="flex items-center gap-4">
                         {/* Language */}
-                        <button className="p-2 rounded-full hover:bg-gray-100 transition border-2">
-                            <i className="fa-solid fa-language text-gray-900 "></i>
+                        <button className="flex items-center gap-1 hover:text-black">
+                            <Globe className="w-5 h-5" /> English
                         </button>
 
                         {/* User Menu */}
-                        <div className="flex items-center gap-2 border p-2 rounded-full cursor-pointer hover:shadow-sm transition">
-                            <i className="fa-solid fa-circle-user text-2xl text-gray-500"></i>
-                            <i className="fa-solid fa-bars text-gray-600"></i>
+                        <div className="flex items-center justify-between border px-3 py-2 rounded-full gap-3 shadow-sm hover:shadow-md transition cursor-pointer">
+                            <UserMenu />
                         </div>
                     </div>
                 </div>
 
+                {/* Top NAV — Homes / Experiences / Services */}
             </header>
-        </>
+
+
+            {/* <SearchBar /> */}
+            {/* Middle NAV — SEARCH BAR */}
+
+            <div className=" sticky top-4 z-50 justify-center hidden md:flex items-center  rounded-full shadow-sm px-4 py-2 gap-3 hover:shadow-md transition cursor-pointer select-none">
+
+                <span className="font-medium px-2">Anywhere</span>
+                <span className="w-px h-5 bg-gray-300"></span>
+
+                <span className="font-medium px-2">Anytime</span>
+                <span className="w-px h-5 bg-gray-300"></span>
+
+                <span className="font-medium px-2">Add guests</span>
+                <span className="w-px h-5 bg-gray-300"></span>
+
+                <div className="bg-red-600 text-white rounded-full p-2 flex items-center justify-center">
+                    <Search className="w-4 h-4" />
+                </div>
+            </div>
+        </div>
     );
 }
-
 
 export default Navbar;

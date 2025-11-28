@@ -16,7 +16,7 @@ export default function Home() {
     ];
 
     return (
-        <main className="px-6 py-10 ">
+        <main className="mt-40 p-6 ">
 
             {/* ================= Carousel Section =================== */}
             {
