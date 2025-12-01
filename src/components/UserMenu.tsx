@@ -1,66 +1,55 @@
-import { useState, useRef, useEffect } from "react";
-import { Menu, UserCircle } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Menu, User } from "lucide-react";
+import UserMenuItem from "./UserMenuItem";
 
-const UserMenu = () => {
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+const UserMenu: React.FC = () => {
+    const [open, setOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
 
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+    // Close on outside click
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                setOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClick);
+        return () => document.removeEventListener("mousedown", handleClick);
+    }, []);
 
-  return (
-    <div className="relative" ref={menuRef}>
-      {/* Trigger Button */}
-      <div
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-3 border px-3 py-2 rounded-full cursor-pointer hover:shadow-md transition"
-      >
-        <Menu className="w-5 h-5 text-gray-700" />
-        <UserCircle className="w-8 h-8 text-gray-500" />
-      </div>
+    return (
+        <div className="relative" ref={menuRef}>
+            {/* Button */}
+            <button
+                className="flex items-center gap-2 border rounded-full px-4 py-2 hover:shadow-md transition bg-white"
+                onClick={() => setOpen(!open)}
+            >
+                <Menu className="w-5 h-5 text-gray-700" />
+                {/* <User className="w-6 h-6 text-gray-700" /> */}
+            </button>
 
-      {/* Dropdown */}
-      {open && (
-        <div
-          className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-lg py-2 border animate-fade"
-        >
-          {/* Guest options */}
-          <ul className="flex flex-col text-gray-700">
+            {/* Dropdown */}
+            {open && (
+                <div className="absolute right-0 mt-3 w-60 bg-white rounded-2xl shadow-xl py-2 z-50">
 
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer font-medium">
-              Login
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer font-medium">
-              Sign Up
-            </li>
+                    <div className="px-4 py-2 text-xs text-gray-500">
+                        Signed in as<br />
+                        <span className="font-medium text-gray-800">tom@example.com</span>
+                    </div>
 
-            <hr className="my-2" />
+                    <hr className="my-2" />
 
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Host your home
-            </li>
+                    <UserMenuItem label="Account settings" onClick={() => {}} />
+                    <UserMenuItem label="Support" onClick={() => {}} />
+                    <UserMenuItem label="License" onClick={() => {}} />
 
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Help
-            </li>
+                    <hr className="my-2" />
 
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Account
-            </li>
-
-          </ul>
+                    <UserMenuItem label="Sign out" danger onClick={() => {}} />
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default UserMenu;

@@ -1,4 +1,4 @@
-import Gallery from "../components/Gallery";
+// import Gallery from "../components/Gallery";
 import TabContent from "../components/Tab";
 import Carousel from "../components/Carousel";
 

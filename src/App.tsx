@@ -7,7 +7,6 @@ import Experiences from './pages/Experiences';
 import Services from './pages/Services';
 import Footer from './pages/Footer';
 import Navbar1 from './components/Navbar1';
-import Navbar2 from './components/Navbar2';
 // import Header from './pages/Header';
 
 function App() {
@@ -16,9 +15,8 @@ function App() {
       <div className="App">
         
         {/* Navigation */}
-        {/* <Navbar /> */}
-        <Navbar1 />
-        {/* <Navbar2 /> */}
+        <Navbar />
+        {/* <Navbar1 /> */}
 
         {/* Routes */}
         <Routes>
