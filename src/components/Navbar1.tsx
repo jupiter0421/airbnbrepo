@@ -1,10 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Globe, Menu, Search } from "lucide-react";
+import { Globe, Menu, Search, User, X } from "lucide-react";
 
 const Navbar: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
+    // const [openSearch, setOpenSearch] = useState(false);
+    const [userMenu, setUserMenu] = useState(false);
+    const [openDropdown, setOpenDropdown] = useState<
+        "where" | "when" | "who" | null
+    >(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(e.target as Node) &&
+                dropdownRef.current &&
+                !dropdownRef.current.contains(e.target as Node)
+            ) {
+                setOpenDropdown(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        const onEsc = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setOpenDropdown(null);
+        };
+        window.addEventListener("keydown", onEsc);
+        return () => window.removeEventListener("keydown", onEsc);
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -12,12 +43,23 @@ const Navbar: React.FC = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+
+    // useEffect(() => {
+    //     const handleClick = (e: MouseEvent) => {
+    //         const target = e.target as HTMLElement;
+    //         if (!target.closest(".search-bar")) setOpenSearch(false);
+    //     };
+    //     document.addEventListener("click", handleClick);
+    //     return () => document.removeEventListener("click", handleClick);
+    // }, []);
+
+
     return (
         <>
             {/* DESKTOP NAVBAR */}
             <header
-                className={`hidden md:block fixed top-0 w-full bg-white border-b border-gray-200 z-50 
-        transition-all duration-300 ${isScrolled ? "py-2" : "py-5"}`}
+                className={`hidden md:block fixed top-0 w-full bg-white border-b shadow border-gray-200 z-50 
+        transition-all duration-300 ${isScrolled ? "py-6" : "py-6"}`}
             >
                 {/* Top Row */}
                 <div className="flex items-center justify-between px-10">
@@ -38,9 +80,9 @@ const Navbar: React.FC = () => {
                         className={`flex gap-6 text-sm font-medium ${isScrolled ? "pointer-events-none" : "pointer-events-auto"
                             }`}
                     >
-                        <Link className="hover:text-black transition flex active" to="/"><img className="" width={30} src="../assets/images/home.png" alt="home-img" /> Homes</Link>
-                        <Link className="hover:text-black transition flex" to="/"><img className="" width={30} src="../assets/images/ballon.png" alt="home-img" /> Experiences</Link>
-                        <Link className="hover:text-black transition flex" to="/"><img className="" width={30} src="../assets/images/service.png" alt="home-img" /> Services</Link>
+                        <Link className="hover:text-black transition border-b-2 border-white focus:border-gray-800 items-center flex active" to="/"><img className="" width={30} src="../assets/images/home.png" alt="home-img" /> Homes</Link>
+                        <Link className="hover:text-black transition border-b-2 border-white focus:border-gray-800 items-center flex" to="/"><img className="" width={30} src="../assets/images/ballon.png" alt="home-img" /> Experiences</Link>
+                        <Link className="hover:text-black transition border-b-2 border-white focus:border-gray-800 items-center flex" to="/"><img className="" width={30} src="../assets/images/service.png" alt="home-img" /> Services</Link>
 
                     </motion.nav>
 
@@ -51,38 +93,185 @@ const Navbar: React.FC = () => {
                         <button className="flex items-center gap-1 hover:text-black">
                             <Globe />
                         </button>
-                        <button>
-                            <Menu />
+
+                        {/* USER MENU BUTTON */}
+                        <button
+                            className="flex items-center gap-2 border rounded-full px-3 py-2 hover:shadow-md transition"
+                            onClick={() => setUserMenu((prev) => !prev)}
+                        >
+                            <Menu size={18} />
                         </button>
 
 
+                        {/* USER DROPDOWN */}
+                        <AnimatePresence>
+                            {userMenu && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    className="absolute right-0 top-14 w-64 bg-white rounded-2xl shadow-xl border p-4 text-sm space-y-4"
+                                >
+                                    <button className="flex items-center gap-3 px-2 py-2 hover:bg-gray-100 rounded-xl w-full text-left">
+                                        <Globe size={18} /> Help Center
+                                    </button>
+
+
+                                    <div className="border-t"></div>
+
+
+                                    <div className="flex items-start gap-3 px-2 py-2 hover:bg-gray-100 rounded-xl cursor-pointer">
+                                        <img src="/assets/images/dog.png" className="w-10 h-10 object-contain" />
+                                        <div>
+                                            <p className="font-semibold">Become a host</p>
+                                            <p className="text-gray-500 text-xs">It's easy to start hosting and earn extra income.</p>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="border-t"></div>
+
+
+                                    <button className="block px-2 py-2 hover:bg-gray-100 rounded-xl w-full text-left">Refer a Host</button>
+                                    <button className="block px-2 py-2 hover:bg-gray-100 rounded-xl w-full text-left">Find a co-host</button>
+                                    <button className="block px-2 py-2 hover:bg-gray-100 rounded-xl w-full text-left">Gift cards</button>
+
+
+                                    <div className="border-t"></div>
+
+
+                                    <button className="block px-2 py-2 hover:bg-gray-100 rounded-xl w-full text-left font-semibold">Log in or sign up</button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
 
                 {/* SEARCH BARS */}
-                <div className="relative h-20 flex justify-center items-center">
+                <div className="flex justify-center items-center">
                     <AnimatePresence mode="wait">
                         {!isScrolled ? (
                             <motion.div
                                 key="full"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
+                                exit={{ opacity: 0, y: 10 }}
                                 transition={{ duration: 0.25 }}
-                                className="flex  w-[800px] items-center justify-between rounded-full 
+                                className="flex mt-3 w-[800px] items-center justify-between rounded-full 
                                             border border-gray-300 bg-white  shadow-sm text-start"
                             >
-                                <div className="btn w-full p-3 pl-5 rounded-full hover:border-1 hover:bg-gray-300 flex flex-col text-start">
+
+                                <div className="w-full p-3 rounded-full hover:border-1 hover:bg-gray-300 flex flex-col text-start pl-5 active focus:bg-gray-400"
+                                    onClick={() =>
+                                        setOpenDropdown(openDropdown === "where" ? null : "where")
+                                    }
+                                >
                                     <span className="font-semibold">Where</span>
                                     <span className="text-gray-500 text-xs">Search destinations</span>
+                                    {openDropdown === "where" && (
+                                        <div
+                                            ref={dropdownRef}
+                                            className="
+      absolute top-[110%] left-1/2 -translate-x-1/2
+      w-[520px] max-h-[420px]
+      bg-white rounded-3xl shadow-xl z-50
+      p-6 overflow-y-auto animate-fadeIn
+    "
+                                        >
+                                            {/* Recent searches */}
+                                            <p className="text-sm font-semibold text-gray-700 mb-4">
+                                                Recent searches
+                                            </p>
+
+                                            <div className="space-y-4">
+
+                                                {/* ITEM 1 */}
+                                                <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
+                                                    <img src="/icons/mountain.png" className="w-10 h-10" />
+                                                    <div>
+                                                        <p className="font-medium">Breckenridge Ski Resort</p>
+                                                        <p className="text-xs text-gray-500">Dec 1 – 25</p>
+                                                    </div>
+                                                </div>
+
+                                                {/* ITEM 2 */}
+                                                <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded-xl">
+                                                    <img src="/icons/mountain2.png" className="w-10 h-10" />
+                                                    <div>
+                                                        <p className="font-medium">Breckenridge</p>
+                                                        <p className="text-xs text-gray-500">Dec 1 – 25</p>
+                                                    </div>
+                                                </div>
+
+                                                <hr className="my-4" />
+
+                                                {/* Suggested destinations */}
+                                                <p className="text-sm font-semibold text-gray-700 mb-2">
+                                                    Suggested destinations
+                                                </p>
+
+                                                <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 cursor-pointer">
+                                                    <div className="w-10 h-10 bg-blue-100 rounded-xl" />
+                                                    <div>
+                                                        <p className="font-medium">Nearby</p>
+                                                        <p className="text-xs text-gray-500">Find what’s around you</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 cursor-pointer">
+                                                    <div className="w-10 h-10 bg-orange-100 rounded-xl" />
+                                                    <div>
+                                                        <p className="font-medium">San Diego, CA</p>
+                                                        <p className="text-xs text-gray-500">Great for a weekend getaway</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 cursor-pointer">
+                                                    <div className="w-10 h-10 bg-blue-200 rounded-xl" />
+                                                    <div>
+                                                        <p className="font-medium">Big Bear Lake, CA</p>
+                                                        <p className="text-xs text-gray-500">Popular lake destination</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 cursor-pointer">
+                                                    <div className="w-10 h-10 bg-red-200 rounded-xl" />
+                                                    <div>
+                                                        <p className="font-medium">Las Vegas, NV</p>
+                                                        <p className="text-xs text-gray-500">
+                                                            For sights like Stratosphere Tower
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
                                 </div>
 
-                                <div className="btn w-full p-3 rounded-full hover:border-1 hover:bg-gray-300 flex flex-col text-start">
+                                <div className="w-full p-3 rounded-full hover:border-1 hover:bg-gray-300 flex flex-col text-start"
+                                    onClick={() =>
+                                        setOpenDropdown(openDropdown === "when" ? null : "when")
+                                    }
+                                >
                                     <span className="font-semibold">When</span>
                                     <span className="text-gray-500 text-xs">Add dates</span>
+
+                                    {openDropdown === "when" && (
+                                        <div ref={dropdownRef}
+                                            className="absolute top-[110%] left-1/2 -translate-x-1/2
+                                                w-[650px] bg-white rounded-3xl shadow-xl p-6 animate-fadeIn z-40">
+
+                                            {/* Calendar UI goes here */}
+                                        </div>
+                                    )}
                                 </div>
 
-                                <div className="btn w-full p-3 rounded-full hover:border-1 hover:bg-gray-300 flex justify-between text-start">
+                                <div className="w-full p-3 rounded-full hover:border-1 hover:bg-gray-300 flex justify-between text-start"
+                                    onClick={() =>
+                                        setOpenDropdown(openDropdown === "who" ? null : "who")
+                                    }
+                                >
                                     <div className="flex flex-col px-3">
                                         <span className="font-semibold">Who</span>
                                         <span className="text-gray-500 text-xs">Add guests</span>
@@ -90,7 +279,24 @@ const Navbar: React.FC = () => {
                                     <div className=" bg-red-600  text-white rounded-full  p-3 flex items-center justify-center">
                                         <Search className="w-4 h-4" />
                                     </div>
+
+                                    {openDropdown === "who" && (
+                                        <div ref={dropdownRef} className="absolute top-[110%] left-1/2 -translate-x-1/2
+                                            w-[480px] bg-white rounded-3xl shadow-xl p-6 animate-fadeIn z-40">
+
+                                            {/* Guests selector */}
+                                            <div className="flex justify-between items-center py-3">
+                                                <div>
+                                                    <p className="font-medium">Adults</p>
+                                                    <p className="text-xs text-gray-500">Ages 13+</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
+
+
                             </motion.div>
                         ) : (
                             <motion.div
@@ -99,7 +305,7 @@ const Navbar: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -5 }}
                                 transition={{ duration: 0.25 }}
-                                className="absolute top-0 flex w-[350px] items-center justify-between rounded-full 
+                                className="absolute top-5 flex w-[350px] items-center justify-between rounded-full 
                                             border border-gray-300 bg-white px-5 py-2"
                             >
                                 <button className="hover:text-black transition flex"><img className="" width={30} src="../assets/images/home.png" alt="home-img" /> </button>
@@ -116,6 +322,10 @@ const Navbar: React.FC = () => {
                     </AnimatePresence>
                 </div>
             </header>
+
+
+
+
 
 
         </>
